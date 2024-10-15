@@ -23,10 +23,12 @@ public class NodeController : MonoBehaviour
     //if the node still has a pellet
     public bool hasPellet = false;
     public SpriteRenderer pelletSprite;
+    public GameManager gameManager;
 
     // Start is called before the first frame update
     void Awake()
     {
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         //if node has a child -> has pellet
         if (transform.childCount > 0)
         {
@@ -131,10 +133,11 @@ public class NodeController : MonoBehaviour
     //if Player reaches node and isPelletNode, set has Pellet to false (collect pellet)
     private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.tag == "Player" && isPelletNode)
+            if (collision.tag == "Player" && hasPellet)
             {
                 hasPellet = false;
                 pelletSprite.enabled = false;
+                gameManager.CollectedPellet(this);
             }
         }
 }
