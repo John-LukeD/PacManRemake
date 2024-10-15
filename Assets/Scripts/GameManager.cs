@@ -8,10 +8,12 @@ public class GameManager : MonoBehaviour
     public GameObject leftWarpNode;
     public GameObject rightWarpNode;
 
+    public AudioSource Siren;
+
     // Start is called before the first frame update
     void Awake()
     {
-        
+        Siren.Play();
     }
 
     // Update is called once per frame
