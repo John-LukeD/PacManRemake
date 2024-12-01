@@ -126,8 +126,6 @@ public class NodeController : MonoBehaviour
         {
             return null;
         }
-
-        
     }
 
     //if Player reaches node and isPelletNode, set has Pellet to false (collect pellet)
