@@ -21,6 +21,7 @@ public class EnemyController : MonoBehaviour
     }
 
     public GhostNodeStatesEnum ghostNodeState;
+    public GhostNodeStatesEnum respawnState;
     public GhostType ghostType;
     public GameObject ghostNodeLeft;
     public GameObject ghostNodeRight;
@@ -30,6 +31,7 @@ public class EnemyController : MonoBehaviour
     public GameObject startingNode;
     public bool readyToLeaveHome = false;
     public GameManager gameManager;
+    public bool testRespawn = false;
 
     void Awake()
     {
@@ -38,22 +40,27 @@ public class EnemyController : MonoBehaviour
         if (ghostType == GhostType.red)
         {
             ghostNodeState = GhostNodeStatesEnum.startNode;
+            respawnState = GhostNodeStatesEnum.centerNode;
             startingNode = ghostNodeStart;
+            readyToLeaveHome = true;
         }
         else if (ghostType == GhostType.pink) 
         {
             ghostNodeState = GhostNodeStatesEnum.centerNode;
             startingNode = ghostNodeCenter;
+            respawnState = GhostNodeStatesEnum.centerNode;
         }
         else if (ghostType == GhostType.blue) 
         {
             ghostNodeState = GhostNodeStatesEnum.leftNode;
             startingNode = ghostNodeLeft;
+            respawnState = GhostNodeStatesEnum.leftNode;
         }
         else if (ghostType == GhostType.orange) 
         {
             ghostNodeState = GhostNodeStatesEnum.rightNode;
             startingNode = ghostNodeRight;
+            respawnState = GhostNodeStatesEnum.rightNode;
         }
         movementController.currentNode = startingNode;
         transform.position = startingNode.transform.position;
@@ -62,7 +69,12 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (testRespawn == true)
+        {
+            readyToLeaveHome = false;
+            ghostNodeState = GhostNodeStatesEnum.respawning;
+            testRespawn = false;
+        }
     }
 
     public void ReachedCenterOfNode(NodeController nodeController)
@@ -77,7 +89,45 @@ public class EnemyController : MonoBehaviour
         }
         else if (ghostNodeState == GhostNodeStatesEnum.respawning)
         {
-            //Determine quickest direction to home
+            string direction = "";
+            //we hjave reached start node, move to centerNode
+            if (transform.position.x == ghostNodeStart.transform.position.x && transform.position.y == ghostNodeStart.transform.position.y)
+            {
+                direction = "down";
+            }
+            //we have reacher our center node, finish respawn or move tot he left/right node
+            else if (transform.position.x == ghostNodeCenter.transform.position.x && transform.position.y == ghostNodeCenter.transform.position.y)
+            {
+                if (respawnState == GhostNodeStatesEnum.centerNode)
+                {
+                    ghostNodeState = respawnState;
+                }
+                else if (respawnState == GhostNodeStatesEnum.leftNode)
+                {
+                    direction = "left";
+                }
+                else if (respawnState == GhostNodeStatesEnum.rightNode)
+                {
+                    direction = "right";
+                }
+            }
+            //if respawn state is either left or right node and we got to that node, leave home again
+            else if (
+                (transform.position.x == ghostNodeLeft.transform.position.x && transform.position.y == ghostNodeLeft.transform.position.y)
+                ||
+                (transform.position.x == ghostNodeRight.transform.position.x && transform.position.y == ghostNodeRight.transform.position.y)
+                )
+            {
+                ghostNodeState = respawnState;
+            }
+            //we are in the gameboard still, locate our start node
+            else
+            {
+                //Determine quickest direction to home
+                direction = GetClosestDirection(ghostNodeStart.transform.position);
+            }
+            
+            movementController.setDirection(direction);
         }
         else
         {
