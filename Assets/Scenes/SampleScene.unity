@@ -48380,7 +48380,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ghostNodeState: 0
-  ghostType: 3
+  ghostType: 0
   ghostNodeLeft: {fileID: 1552680191}
   ghostNodeRight: {fileID: 1335537984}
   ghostNodeCenter: {fileID: 2092456502}
@@ -48388,6 +48388,7 @@ MonoBehaviour:
   movementController: {fileID: 0}
   startingNode: {fileID: 0}
   readyToLeaveHome: 0
+  gameManager: {fileID: 0}
 --- !u!4 &1691397128
 Transform:
   m_ObjectHideFlags: 0
@@ -49025,7 +49026,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -201, y: 314.75}
+  m_AnchoredPosition: {x: -272.4, y: 406.6}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1701826987
@@ -51962,6 +51963,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85df4100feb99456e9691518f83a3f06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pacman: {fileID: 1385465202}
   leftWarpNode: {fileID: 1848474273}
   rightWarpNode: {fileID: 977722362}
   Siren: {fileID: 1771765738}
