@@ -25,6 +25,7 @@ public class NodeController : MonoBehaviour
     public bool isGhostStartingNode = false;
     public SpriteRenderer pelletSprite;
     public GameManager gameManager;
+    public bool isSideNode = false;
 
     // Start is called before the first frame update
     void Awake()
