@@ -21,6 +21,7 @@ public class EnemyController : MonoBehaviour
     }
 
     public GhostNodeStatesEnum ghostNodeState;
+    public GhostNodeStatesEnum startGhostNodeState;
     public GhostNodeStatesEnum respawnState;
     public GhostType ghostType;
     public GameObject ghostNodeLeft;
@@ -39,42 +40,63 @@ public class EnemyController : MonoBehaviour
 
     void Awake()
     {
-        scatterNodeIndex = 0;
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         movementController = GetComponent<MovementController>();
         if (ghostType == GhostType.red)
         {
-            ghostNodeState = GhostNodeStatesEnum.startNode;
+            startGhostNodeState = GhostNodeStatesEnum.startNode;
             respawnState = GhostNodeStatesEnum.centerNode;
             startingNode = ghostNodeStart;
-            readyToLeaveHome = true;
-            leftHomeBefore = true;
         }
         else if (ghostType == GhostType.pink) 
         {
-            ghostNodeState = GhostNodeStatesEnum.centerNode;
+            startGhostNodeState = GhostNodeStatesEnum.centerNode;
             startingNode = ghostNodeCenter;
             respawnState = GhostNodeStatesEnum.centerNode;
         }
         else if (ghostType == GhostType.blue) 
         {
-            ghostNodeState = GhostNodeStatesEnum.leftNode;
+            startGhostNodeState = GhostNodeStatesEnum.leftNode;
             startingNode = ghostNodeLeft;
             respawnState = GhostNodeStatesEnum.leftNode;
         }
         else if (ghostType == GhostType.orange) 
         {
-            ghostNodeState = GhostNodeStatesEnum.rightNode;
+            startGhostNodeState = GhostNodeStatesEnum.rightNode;
             startingNode = ghostNodeRight;
             respawnState = GhostNodeStatesEnum.rightNode;
         }
+    }
+
+    public void SetUp()
+    {
+        ghostNodeState = startGhostNodeState;
+        //Reset ghost back to home position
         movementController.currentNode = startingNode;
         transform.position = startingNode.transform.position;
+        //Set scatterNodeIndex = 0
+        scatterNodeIndex = 0;
+        //Set isFrightened = false;
+        isFreightened = false;
+        //Set RedyToLeaveHome to be false if they are blue or pink
+        if (ghostType == GhostType.red)
+        {
+            readyToLeaveHome = true;
+            leftHomeBefore = true;
+        }
+        else if (ghostType == GhostType.pink)
+        {
+            readyToLeaveHome = true;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!gameManager.gameIsRunning)
+        {
+            return;
+        }
         if (testRespawn == true)
         {
             readyToLeaveHome = false;
