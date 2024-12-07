@@ -25,19 +25,19 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("moving", true);
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-            movementController.setDirection("left");
+            movementController.SetDirection("left");
         }
         if (Input.GetKey(KeyCode.RightArrow))
         {
-            movementController.setDirection("right");
+            movementController.SetDirection("right");
         }
         if (Input.GetKey(KeyCode.UpArrow))
         {
-            movementController.setDirection("up");
+            movementController.SetDirection("up");
         }
         if (Input.GetKey(KeyCode.DownArrow))
         {
-            movementController.setDirection("down");
+            movementController.SetDirection("down");
         }
 
         bool flipX = false;

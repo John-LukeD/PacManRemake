@@ -35,6 +35,7 @@ public class EnemyController : MonoBehaviour
     public bool isFreightened = false;
     public GameObject[] scatterNodes;
     public int scatterNodeIndex;
+    public bool leftHomeBefore = false;
 
     void Awake()
     {
@@ -47,6 +48,7 @@ public class EnemyController : MonoBehaviour
             respawnState = GhostNodeStatesEnum.centerNode;
             startingNode = ghostNodeStart;
             readyToLeaveHome = true;
+            leftHomeBefore = true;
         }
         else if (ghostType == GhostType.pink) 
         {
@@ -81,11 +83,11 @@ public class EnemyController : MonoBehaviour
         }
         if (movementController.currentNode.GetComponent<NodeController>().isSideNode)
         {
-            movementController.setSpeed(1);
+            movementController.SetSpeed(1);
         }
         else
         {
-            movementController.setSpeed(3);
+            movementController.SetSpeed(3);
         }
     }
 
@@ -93,6 +95,7 @@ public class EnemyController : MonoBehaviour
     {
         if (ghostNodeState == GhostNodeStatesEnum.movingInNodes)
         {
+            leftHomeBefore = true;
             //Scatter Mode
             if (gameManager.currentGhostMode == GameManager.GhostMode.scatter)
             {
@@ -101,7 +104,8 @@ public class EnemyController : MonoBehaviour
             //Freightened Mode
             else if (isFreightened)
             {
-
+                string direction = GetRandomDirection();
+                movementController.SetDirection(direction);
             }
             //Chase Mode
             else
@@ -166,7 +170,7 @@ public class EnemyController : MonoBehaviour
                 direction = GetClosestDirection(ghostNodeStart.transform.position);
             }
             
-            movementController.setDirection(direction);
+            movementController.SetDirection(direction);
         }
         else
         {
@@ -177,25 +181,25 @@ public class EnemyController : MonoBehaviour
                 if (ghostNodeState == GhostNodeStatesEnum.leftNode)
                 {
                     ghostNodeState = GhostNodeStatesEnum.centerNode;
-                    movementController.setDirection("right");
+                    movementController.SetDirection("right");
                 }
                 //if we are in the right homeNode => move to the center
                 else if (ghostNodeState == GhostNodeStatesEnum.rightNode)
                 {
                     ghostNodeState = GhostNodeStatesEnum.centerNode;
-                    movementController.setDirection("left");
+                    movementController.SetDirection("left");
                 }
                 //if we are in the center node => move to startNode
                 else if (ghostNodeState == GhostNodeStatesEnum.centerNode)
                 {
                     ghostNodeState = GhostNodeStatesEnum.startNode;
-                    movementController.setDirection("up");
+                    movementController.SetDirection("up");
                 }
                 //if we are in the start node, start moving around in the game
                 else if (ghostNodeState == GhostNodeStatesEnum.startNode)
                 {
                     ghostNodeState = GhostNodeStatesEnum.movingInNodes;
-                    movementController.setDirection("left");
+                    movementController.SetDirection("left");
                 }
             }
         }
@@ -216,13 +220,13 @@ public class EnemyController : MonoBehaviour
 
                 string direction = GetClosestDirection(scatterNodes[scatterNodeIndex].transform.position);
 
-                movementController.setDirection(direction);
+                movementController.SetDirection(direction);
     }
 
     void DetermineRedGhostDirection()
     {
         string direction = GetClosestDirection(gameManager.pacman.transform.position);
-        movementController.setDirection(direction);
+        movementController.SetDirection(direction);
     }
 
     void DeterminePinkGhostDirection()
@@ -247,7 +251,7 @@ public class EnemyController : MonoBehaviour
             target.y -= distanceBetweenNodes * 2;
         }
         string direction = GetClosestDirection(target);
-        movementController.setDirection(direction);
+        movementController.SetDirection(direction);
     }
 
     void DetermineBlueGhostDirection()
@@ -278,7 +282,35 @@ public class EnemyController : MonoBehaviour
 
         Vector2 blueTarget = new Vector2(target.x + xDistance, target.y + yDistance);
         string direction = GetClosestDirection(blueTarget);
-        movementController.setDirection(direction);
+        movementController.SetDirection(direction);
+    }
+
+    string GetRandomDirection()
+    {
+        List<string> possibleDirecetions = new List<string>();
+        NodeController nodeController = movementController.currentNode.GetComponent<NodeController>();
+
+        if (nodeController.canMoveDown && movementController.lastMovingDirection != "up")
+        {
+            possibleDirecetions.Add("down");
+        }
+        else if (nodeController.canMoveUp && movementController.lastMovingDirection != "down")
+        {
+            possibleDirecetions.Add("up");
+        }
+        else if (nodeController.canMoveRight && movementController.lastMovingDirection != "left")
+        {
+            possibleDirecetions.Add("Right");
+        }
+        else if (nodeController.canMoveLeft && movementController.lastMovingDirection != "right")
+        {
+            possibleDirecetions.Add("left");
+        }
+
+        string direction = "";
+        int randomDirectionIndex = Random.Range(0, possibleDirecetions.Count - 1);
+        direction = possibleDirecetions[randomDirectionIndex];
+        return direction;
     }
 
     void DetermineOrangeGhostDirection()
