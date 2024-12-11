@@ -82,7 +82,8 @@ public class EnemyController : MonoBehaviour
 
         //DO NOT CGANGE ANYTHING BETWEEN THIS AND movementController.currentNode = startingNode;
         //I spent 3 days trying to figure out what was wrong with this game and IDK HOW BUT AFTER PASTING
-        //THIS CODE WHICH IS WHAT I HAVE IN AWAKE, IT MAGICALLY WORKS AGAIN
+        //THIS CODE WHICH IS WHAT I HAVE IN AWAKE, IT MAGICALLY WORKS AGAIN -- I cant explain why but i think the awake function
+        //was not executing -- will try yo fix awake to clean this up in future
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         if (movementController == null)
         {
@@ -118,14 +119,19 @@ public class EnemyController : MonoBehaviour
         }       
         //END DO NOT TOUCH CODE 
 
+        readyToLeaveHome = false;
         //Reset our ghost back to home position
         movementController.currentNode = startingNode; 
 
         transform.position = startingNode.transform.position;
+        movementController.direction = "";
+        movementController.lastMovingDirection = "";
         //set their sctter  node index back to 0
         scatterNodeIndex = 0;
         //set is frightened to false
         isFreightened = false;
+
+        leftHomeBefore = false;
         //set ready to leave home false if they are blue or pink ghost
         if (ghostType == GhostType.red)
         {
