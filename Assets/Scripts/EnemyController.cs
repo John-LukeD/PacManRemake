@@ -21,6 +21,7 @@ public class EnemyController : MonoBehaviour
     }
 
     public GhostNodeStatesEnum ghostNodeState;
+    public GhostNodeStatesEnum startGhostNodeState;
     public GhostNodeStatesEnum respawnState;
     public GhostType ghostType;
     public GameObject ghostNodeLeft;
@@ -39,42 +40,111 @@ public class EnemyController : MonoBehaviour
 
     void Awake()
     {
-        scatterNodeIndex = 0;
+
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        movementController = GetComponent<MovementController>();
+        if (movementController == null)
+        {
+            movementController = GetComponent<MovementController>();
+            if (movementController == null)
+            {
+                Debug.LogError("MovementController is missing on the EnemyController GameObject!");
+            }
+        }
         if (ghostType == GhostType.red)
         {
-            ghostNodeState = GhostNodeStatesEnum.startNode;
+            startGhostNodeState = GhostNodeStatesEnum.startNode;
             respawnState = GhostNodeStatesEnum.centerNode;
             startingNode = ghostNodeStart;
-            readyToLeaveHome = true;
-            leftHomeBefore = true;
         }
         else if (ghostType == GhostType.pink) 
         {
-            ghostNodeState = GhostNodeStatesEnum.centerNode;
+            startGhostNodeState = GhostNodeStatesEnum.centerNode;
             startingNode = ghostNodeCenter;
             respawnState = GhostNodeStatesEnum.centerNode;
         }
         else if (ghostType == GhostType.blue) 
         {
-            ghostNodeState = GhostNodeStatesEnum.leftNode;
+            startGhostNodeState = GhostNodeStatesEnum.leftNode;
             startingNode = ghostNodeLeft;
             respawnState = GhostNodeStatesEnum.leftNode;
         }
         else if (ghostType == GhostType.orange) 
         {
-            ghostNodeState = GhostNodeStatesEnum.rightNode;
+            startGhostNodeState = GhostNodeStatesEnum.rightNode;
             startingNode = ghostNodeRight;
             respawnState = GhostNodeStatesEnum.rightNode;
         }
-        movementController.currentNode = startingNode;
+    }
+
+    public void SetUp()
+    {
+        ghostNodeState = startGhostNodeState;
+
+        //DO NOT CGANGE ANYTHING BETWEEN THIS AND movementController.currentNode = startingNode;
+        //I spent 3 days trying to figure out what was wrong with this game and IDK HOW BUT AFTER PASTING
+        //THIS CODE WHICH IS WHAT I HAVE IN AWAKE, IT MAGICALLY WORKS AGAIN
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        if (movementController == null)
+        {
+            movementController = GetComponent<MovementController>();
+            if (movementController == null)
+            {
+                Debug.LogError("MovementController is missing on the EnemyController GameObject!");
+            }
+        }
+        if (ghostType == GhostType.red)
+        {
+            startGhostNodeState = GhostNodeStatesEnum.startNode;
+            respawnState = GhostNodeStatesEnum.centerNode;
+            startingNode = ghostNodeStart;
+        }
+        else if (ghostType == GhostType.pink) 
+        {
+            startGhostNodeState = GhostNodeStatesEnum.centerNode;
+            startingNode = ghostNodeCenter;
+            respawnState = GhostNodeStatesEnum.centerNode;
+        }
+        else if (ghostType == GhostType.blue) 
+        {
+            startGhostNodeState = GhostNodeStatesEnum.leftNode;
+            startingNode = ghostNodeLeft;
+            respawnState = GhostNodeStatesEnum.leftNode;
+        }
+        else if (ghostType == GhostType.orange) 
+        {
+            startGhostNodeState = GhostNodeStatesEnum.rightNode;
+            startingNode = ghostNodeRight;
+            respawnState = GhostNodeStatesEnum.rightNode;
+        }       
+        //END DO NOT TOUCH CODE 
+
+        //Reset our ghost back to home position
+        movementController.currentNode = startingNode; 
+
         transform.position = startingNode.transform.position;
+        //set their sctter  node index back to 0
+        scatterNodeIndex = 0;
+        //set is frightened to false
+        isFreightened = false;
+        //set ready to leave home false if they are blue or pink ghost
+        if (ghostType == GhostType.red)
+        {
+            readyToLeaveHome = true;
+            leftHomeBefore = true;
+        }
+        else if (ghostType == GhostType.pink)
+        {
+            readyToLeaveHome = true;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!gameManager.gameIsRunning)
+        {
+            return;
+        }
         if (testRespawn == true)
         {
             readyToLeaveHome = false;
