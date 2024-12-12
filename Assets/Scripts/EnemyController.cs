@@ -59,7 +59,7 @@ public class EnemyController : MonoBehaviour
         if (ghostType == GhostType.red)
         {
             startGhostNodeState = GhostNodeStatesEnum.startNode;
-            respawnState = GhostNodeStatesEnum.centerNode;
+            respawnState = GhostNodeStatesEnum.startNode;
             startingNode = ghostNodeStart;
         }
         else if (ghostType == GhostType.pink) 
@@ -106,7 +106,7 @@ public class EnemyController : MonoBehaviour
         if (ghostType == GhostType.red)
         {
             startGhostNodeState = GhostNodeStatesEnum.startNode;
-            respawnState = GhostNodeStatesEnum.centerNode;
+            respawnState = GhostNodeStatesEnum.startNode;
             startingNode = ghostNodeStart;
         }
         else if (ghostType == GhostType.pink) 
@@ -158,10 +158,22 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (ghostNodeState != GhostNodeStatesEnum.movingInNodes || !gameManager.isPowerPelletRunning)
+        {
+            isFreightened = false;
+        }
+
         //Show our sprites
         if (isVisible)
         {
-            ghostSprite.enabled = true;
+            if (ghostNodeState != GhostNodeStatesEnum.respawning)
+            {
+                ghostSprite.enabled = true;
+            }
+            else
+            {
+                ghostSprite.enabled = false;
+            }
             eyesSprite.enabled = true;
         }
         //hide our sprites
@@ -183,12 +195,24 @@ public class EnemyController : MonoBehaviour
         //set color back to inspector color
         {
             animator.SetBool("frightened", false);
+            animator.SetBool("frightenedBlinking", false);
+
             ghostSprite.color = color;
         }
 
         if (!gameManager.gameIsRunning)
         {
             return;
+        }
+
+        if (gameManager.powerPelletTimer - gameManager.currentPowerPelletTime <= 3)
+        {
+            animator.SetBool("frightenedBlinking", true);
+
+        }
+        else
+        {
+            animator.SetBool("frightenedBlinking", false);
         }
 
         animator.SetBool("moving", true);
@@ -207,8 +231,24 @@ public class EnemyController : MonoBehaviour
         }
         else
         {
-            movementController.SetSpeed(3);
+            if (isFreightened)
+            {
+                movementController.SetSpeed(1);
+            }
+            else if (ghostNodeState == GhostNodeStatesEnum.respawning)
+            {
+                movementController.SetSpeed(7);
+            }
+            else
+            {
+                movementController.SetSpeed(2);
+            }
         }
+    }
+
+    public void SetFrightened(bool newIsFrightened)
+    {
+        isFreightened = newIsFrightened;
     }
 
     public void ReachedCenterOfNode(NodeController nodeController)
@@ -407,29 +447,29 @@ public class EnemyController : MonoBehaviour
 
     string GetRandomDirection()
     {
-        List<string> possibleDirecetions = new List<string>();
+        List<string> possibleDirections = new List<string>();
         NodeController nodeController = movementController.currentNode.GetComponent<NodeController>();
 
         if (nodeController.canMoveDown && movementController.lastMovingDirection != "up")
         {
-            possibleDirecetions.Add("down");
+            possibleDirections.Add("down");
         }
         else if (nodeController.canMoveUp && movementController.lastMovingDirection != "down")
         {
-            possibleDirecetions.Add("up");
+            possibleDirections.Add("up");
         }
         else if (nodeController.canMoveRight && movementController.lastMovingDirection != "left")
         {
-            possibleDirecetions.Add("Right");
+            possibleDirections.Add("right");
         }
         else if (nodeController.canMoveLeft && movementController.lastMovingDirection != "right")
         {
-            possibleDirecetions.Add("left");
+            possibleDirections.Add("left");
         }
 
         string direction = "";
-        int randomDirectionIndex = Random.Range(0, possibleDirecetions.Count - 1);
-        direction = possibleDirecetions[randomDirectionIndex];
+        int randomDirectionIndex = Random.Range(0, possibleDirections.Count - 1);
+        direction = possibleDirections[randomDirectionIndex];
         return direction;
     }
 
@@ -533,12 +573,13 @@ public class EnemyController : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Player")
+        if (collision.tag == "Player" && ghostNodeState != GhostNodeStatesEnum.respawning)
         {
             //Get eaten
             if (isFreightened)
             {
-
+                gameManager.GhostEaten();
+                ghostNodeState = GhostNodeStatesEnum.respawning;
             }
             //Eat player
             else
