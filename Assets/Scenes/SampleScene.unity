@@ -1674,6 +1674,7 @@ GameObject:
   - component: {fileID: 45064472}
   - component: {fileID: 45064471}
   - component: {fileID: 45064470}
+  - component: {fileID: 45064475}
   m_Layer: 0
   m_Name: Pink
   m_TagString: Enemy
@@ -1768,7 +1769,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 1b4f2308cee844ef9aa9bea8e39f9edc, type: 3}
-  m_Color: {r: 0.9811321, g: 0.47843137, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1833,6 +1834,8 @@ MonoBehaviour:
   isVisible: 1
   ghostSprite: {fileID: 0}
   eyesSprite: {fileID: 1581596271}
+  animator: {fileID: 0}
+  color: {r: 0.98039216, g: 0.5568628, b: 0.88235295, a: 1}
 --- !u!4 &45064474
 Transform:
   m_ObjectHideFlags: 0
@@ -1849,6 +1852,27 @@ Transform:
   - {fileID: 1581596270}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &45064475
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 45064469}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 73b483270256e4773b71d53119b94516, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &46963671
 GameObject:
   m_ObjectHideFlags: 0
@@ -5895,6 +5919,7 @@ GameObject:
   - component: {fileID: 196373535}
   - component: {fileID: 196373534}
   - component: {fileID: 196373533}
+  - component: {fileID: 196373538}
   m_Layer: 0
   m_Name: Blue
   m_TagString: Enemy
@@ -5989,7 +6014,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 1b4f2308cee844ef9aa9bea8e39f9edc, type: 3}
-  m_Color: {r: 0.019607844, g: 0.98039216, b: 0.98039216, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -6058,6 +6083,8 @@ MonoBehaviour:
   isVisible: 1
   ghostSprite: {fileID: 0}
   eyesSprite: {fileID: 950574881}
+  animator: {fileID: 0}
+  color: {r: 0.019607844, g: 0.98039216, b: 0.98039216, a: 1}
 --- !u!4 &196373537
 Transform:
   m_ObjectHideFlags: 0
@@ -6074,6 +6101,27 @@ Transform:
   - {fileID: 950574880}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &196373538
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 196373532}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 73b483270256e4773b71d53119b94516, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &197186748
 GameObject:
   m_ObjectHideFlags: 0
@@ -49427,6 +49475,7 @@ GameObject:
   - component: {fileID: 1691397126}
   - component: {fileID: 1691397125}
   - component: {fileID: 1691397129}
+  - component: {fileID: 1691397130}
   m_Layer: 0
   m_Name: Red
   m_TagString: Enemy
@@ -49476,7 +49525,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 1b4f2308cee844ef9aa9bea8e39f9edc, type: 3}
-  m_Color: {r: 0.9811321, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -49541,6 +49590,8 @@ MonoBehaviour:
   isVisible: 1
   ghostSprite: {fileID: 0}
   eyesSprite: {fileID: 1451579406}
+  animator: {fileID: 0}
+  color: {r: 1, g: 0, b: 0, a: 1}
 --- !u!4 &1691397128
 Transform:
   m_ObjectHideFlags: 0
@@ -49602,6 +49653,27 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.3698003, y: 1.3698001}
   m_EdgeRadius: 0
+--- !u!95 &1691397130
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1691397124}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 73b483270256e4773b71d53119b94516, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1691647027
 GameObject:
   m_ObjectHideFlags: 0
@@ -53232,6 +53304,11 @@ MonoBehaviour:
   blackBackground: {fileID: 1779635702}
   gameOverText: {fileID: 816487553}
   currentGhostMode: 0
+  ghostModeTimers: 07000000140000000700000014000000050000001400000005000000
+  ghostModeTimerIndex: 0
+  ghostModeTimer: 0
+  runningTimer: 0
+  completedTimer: 0
 --- !u!4 &1771765737
 Transform:
   m_ObjectHideFlags: 0
@@ -61482,6 +61559,7 @@ GameObject:
   - component: {fileID: 2060470773}
   - component: {fileID: 2060470772}
   - component: {fileID: 2060470771}
+  - component: {fileID: 2060470776}
   m_Layer: 0
   m_Name: Orange
   m_TagString: Enemy
@@ -61576,7 +61654,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 1b4f2308cee844ef9aa9bea8e39f9edc, type: 3}
-  m_Color: {r: 0.98039216, g: 0.54509807, b: 0.050980393, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -61644,6 +61722,8 @@ MonoBehaviour:
   isVisible: 1
   ghostSprite: {fileID: 0}
   eyesSprite: {fileID: 1388552409}
+  animator: {fileID: 0}
+  color: {r: 0.98039216, g: 0.54509807, b: 0.050980393, a: 1}
 --- !u!4 &2060470775
 Transform:
   m_ObjectHideFlags: 0
@@ -61660,6 +61740,27 @@ Transform:
   - {fileID: 1388552408}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &2060470776
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2060470770}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 73b483270256e4773b71d53119b94516, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2061460402
 GameObject:
   m_ObjectHideFlags: 0
