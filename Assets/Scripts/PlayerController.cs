@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
 
-    MovementController movementController;
+    public MovementController movementController;
     public SpriteRenderer sprite;
     public Animator animator;
     public GameObject startNode;

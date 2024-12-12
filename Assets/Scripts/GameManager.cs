@@ -5,17 +5,20 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-
-    public GameObject pacman;
-    public GameObject leftWarpNode;
-    public GameObject rightWarpNode;
-
     public AudioSource Siren;
     public AudioSource munch1;
     public AudioSource munch2;
-    public int currentMunch;
-    public int score;
+    public AudioSource startGameAudio;
+    public AudioSource death;
+    public AudioSource powerPelletAudio;
+    public AudioSource ghostEatenAudio;
+    public Image blackBackground;
+    public Text gameOverText;
+    public Text livesText;
     public Text scoreText;
+    public GameObject pacman;
+    public GameObject leftWarpNode;
+    public GameObject rightWarpNode;
     public GameObject ghostNodeLeft;
     public GameObject ghostNodeRight;
     public GameObject ghostNodeCenter;
@@ -29,40 +32,33 @@ public class GameManager : MonoBehaviour
     public EnemyController pinkGhostController;
     public EnemyController blueGhostController;
     public EnemyController orangeGhostController;
-
+    public float currentPowerPelletTime = 0;
+    public float powerPelletTimer = 8f;
+    public float ghostModeTimer;
+    public int [] ghostModeTimers = new int[] {7, 20, 7, 20, 5, 20, 5};
+    public int ghostModeTimerIndex;
+    public int powerPelletMultiplyer = 1;
+    public int currentMunch;
+    public int score;
     public int totalPellets;
     public int pelletsLeft;
     public int pelletsCollectedOnThisLife;
-    public bool hadDeathOnThisLevel = false;
-    public bool gameIsRunning;
-    public List<NodeController> nodeControllers = new List<NodeController>();
-    public bool newGame;
-    public bool clearedLevel;
-    public AudioSource startGameAudio;
-    public AudioSource death;
-    public AudioSource powerPelletAudio;
-    //public AudioSource respawningAudio;
-    public AudioSource ghostEatenAudio;
     public int lives;
     public int currentLevel;
-    public Image blackBackground;
-    public Text gameOverText;
-    public Text livesText;
+    public bool hadDeathOnThisLevel = false;
+    public bool gameIsRunning;
+    public bool newGame;
+    public bool clearedLevel;
     public bool isPowerPelletRunning = false;
-    public float currentPowerPelletTime = 0;
-    public float powerPelletTimer = 8f;
-    public int powerPelletMultiplyer = 1;
+    public bool runningTimer;
+    public bool completedTimer;
+    public List<NodeController> nodeControllers = new List<NodeController>();
+    
     public enum GhostMode
     {
         chase, scatter
     }
     public GhostMode currentGhostMode;
-
-    public int [] ghostModeTimers = new int[] {7, 20, 7, 20, 5, 20, 5};
-    public int ghostModeTimerIndex;
-    public float ghostModeTimer;
-    public bool runningTimer;
-    public bool completedTimer;
 
     // Start is called before the first frame update
     void Awake()
@@ -91,24 +87,6 @@ public class GameManager : MonoBehaviour
         {
             return;
         }
-
-        //if(redGhostController.ghostNodeState == EnemyController.GhostNodeStatesEnum.respawning
-        //    || pinkGhostController.ghostNodeState == EnemyController.GhostNodeStatesEnum.respawning
-        //    || blueGhostController.ghostNodeState == EnemyController.GhostNodeStatesEnum.respawning
-        //    || orangeGhostController.ghostNodeState == EnemyController.GhostNodeStatesEnum.respawning)
-        //{
-        //    if (!respawningAudio.isPlaying)
-        //    {
-        //        respawningAudio.Play();
-        //    }
-        //}
-        //else
-        //{
-        //    if (respawningAudio.isPlaying)
-        //    {
-        //        respawningAudio.Stop();
-        //    }
-        //}
 
         if (!completedTimer && runningTimer)
         {

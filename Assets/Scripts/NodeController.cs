@@ -5,16 +5,16 @@ using UnityEngine;
 public class NodeController : MonoBehaviour
 {
 
-    public bool canMoveLeft = false;
-    public bool canMoveRight = false;
-    public bool canMoveUp = false;
-    public bool canMoveDown = false;
-
+    public SpriteRenderer pelletSprite;
+    public GameManager gameManager;
     public GameObject nodeLeft;
     public GameObject nodeRight;
     public GameObject nodeUp;
     public GameObject nodeDown;
-
+    public bool canMoveLeft = false;
+    public bool canMoveRight = false;
+    public bool canMoveUp = false;
+    public bool canMoveDown = false;
     public bool isWarpRightNode = false;
     public bool isWarpLeftNode = false;
 
@@ -23,8 +23,7 @@ public class NodeController : MonoBehaviour
     //if the node still has a pellet
     public bool hasPellet = false;
     public bool isGhostStartingNode = false;
-    public SpriteRenderer pelletSprite;
-    public GameManager gameManager;
+    
     public bool isSideNode = false;
     public bool isPowerPellet = false;
     public float powerPelletBlinkingTimer = 0;

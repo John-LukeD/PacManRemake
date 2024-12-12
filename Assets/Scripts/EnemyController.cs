@@ -28,16 +28,16 @@ public class EnemyController : MonoBehaviour
     public GameObject ghostNodeRight;
     public GameObject ghostNodeCenter;
     public GameObject ghostNodeStart;
-    public MovementController movementController;
     public GameObject startingNode;
-    public bool readyToLeaveHome = false;
+    public GameObject[] scatterNodes;
+    public MovementController movementController;
     public GameManager gameManager;
+    public bool readyToLeaveHome = false;
     public bool testRespawn = false;
     public bool isFreightened = false;
-    public GameObject[] scatterNodes;
-    public int scatterNodeIndex;
     public bool leftHomeBefore = false;
     public bool isVisible = true;
+    public int scatterNodeIndex;
     public SpriteRenderer ghostSprite;
     public SpriteRenderer eyesSprite;
     public Animator animator;
@@ -59,7 +59,7 @@ public class EnemyController : MonoBehaviour
         if (ghostType == GhostType.red)
         {
             startGhostNodeState = GhostNodeStatesEnum.startNode;
-            respawnState = GhostNodeStatesEnum.startNode;
+            respawnState = GhostNodeStatesEnum.centerNode;
             startingNode = ghostNodeStart;
         }
         else if (ghostType == GhostType.pink) 
@@ -67,9 +67,11 @@ public class EnemyController : MonoBehaviour
             startGhostNodeState = GhostNodeStatesEnum.centerNode;
             startingNode = ghostNodeCenter;
             respawnState = GhostNodeStatesEnum.centerNode;
+
         }
         else if (ghostType == GhostType.blue) 
         {
+            
             startGhostNodeState = GhostNodeStatesEnum.leftNode;
             startingNode = ghostNodeLeft;
             respawnState = GhostNodeStatesEnum.leftNode;
@@ -106,7 +108,7 @@ public class EnemyController : MonoBehaviour
         if (ghostType == GhostType.red)
         {
             startGhostNodeState = GhostNodeStatesEnum.startNode;
-            respawnState = GhostNodeStatesEnum.startNode;
+            respawnState = GhostNodeStatesEnum.centerNode;
             startingNode = ghostNodeStart;
         }
         else if (ghostType == GhostType.pink) 
@@ -128,6 +130,7 @@ public class EnemyController : MonoBehaviour
             respawnState = GhostNodeStatesEnum.rightNode;
         }       
         //END DO NOT TOUCH CODE 
+
 
         readyToLeaveHome = false;
         //Reset our ghost back to home position
