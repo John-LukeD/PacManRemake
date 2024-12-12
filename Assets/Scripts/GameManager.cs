@@ -50,6 +50,12 @@ public class GameManager : MonoBehaviour
     }
     public GhostMode currentGhostMode;
 
+    public int [] ghostModeTimers = new int[] {7, 20, 7, 20, 5, 20, 5};
+    public int ghostModeTimerIndex;
+    public float ghostModeTimer;
+    public bool runningTimer;
+    public bool completedTimer;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -73,11 +79,43 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (!gameIsRunning)
+        {
+            return;
+        }
+        if (!completedTimer && runningTimer)
+        {
+            ghostModeTimer += Time.deltaTime;
+            if (ghostModeTimer >= ghostModeTimers[ghostModeTimerIndex])
+            {
+                ghostModeTimer = 0;
+                ghostModeTimerIndex ++;
+                if (currentGhostMode == GhostMode.chase)
+                {
+                    currentGhostMode = GhostMode.scatter;
+                }
+                else
+                {
+                    currentGhostMode = GhostMode.chase;
+                }
+
+                //if we get to the end of our timer array (switched from chase to scatter max amount of times), stay in chase mode
+                if (ghostModeTimerIndex == ghostModeTimers.Length)
+                {
+                    completedTimer = true;
+                    runningTimer = false;
+                    currentGhostMode = GhostMode.chase;
+                }
+            }
+        }
     }
 
     public IEnumerator SetUp()
     {
+        ghostModeTimerIndex = 0;
+        ghostModeTimer = 0;
+        completedTimer = false;
+        runningTimer = true;
         gameOverText.enabled = false;
         //if pacman clears a level a background will appear covering the level and the game will pause for 0.1 seconds
         if (clearedLevel)
