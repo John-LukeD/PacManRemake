@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     public Text gameOverText;
     public Text livesText;
     public Text scoreText;
+    public Text levelText;
     public GameObject pacman;
     public GameObject leftWarpNode;
     public GameObject rightWarpNode;
@@ -186,6 +187,12 @@ public class GameManager : MonoBehaviour
         StartGame();
     }
 
+    void SetLevel (int newLevel)
+    {
+        currentLevel = newLevel;
+        levelText.text = "Level: " + currentLevel;
+    }
+
     void SetLives (int newLives)
     {
         lives = newLives;
@@ -266,7 +273,8 @@ public class GameManager : MonoBehaviour
         //check if there are any pellets left, if no => start new level
         if (pelletsLeft == 0)
         {
-            currentLevel ++;
+            SetLevel(currentLevel + 1);
+            //currentLevel ++;
             clearedLevel = true;
             StopGame();
             yield return new WaitForSeconds(1);
