@@ -7,10 +7,12 @@ public class NodeController : MonoBehaviour
 
     public SpriteRenderer pelletSprite;
     public GameManager gameManager;
+    //refernces to surrounding nodes from current node
     public GameObject nodeLeft;
     public GameObject nodeRight;
     public GameObject nodeUp;
     public GameObject nodeDown;
+    //movement variables
     public bool canMoveLeft = false;
     public bool canMoveRight = false;
     public bool canMoveUp = false;
@@ -22,13 +24,14 @@ public class NodeController : MonoBehaviour
     public bool isPelletNode = false;
     //if the node still has a pellet
     public bool hasPellet = false;
+    //ghost spawn nodes
     public bool isGhostStartingNode = false;
-    
     public bool isSideNode = false;
     public bool isPowerPellet = false;
     public float powerPelletBlinkingTimer = 0;
 
     // Start is called before the first frame update
+    //intitalize all of our nodes to allow movement (left, right, up, down)
     void Awake()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -42,10 +45,10 @@ public class NodeController : MonoBehaviour
         }
 
         RaycastHit2D[] hitsDown;
-        //shoot raycast (line) going down
+        //shoot raycast (line) going down 
         hitsDown =Physics2D.RaycastAll(transform.position, -Vector2.up);
 
-        //loop through all of the objects that the raycast hits
+        //loop through all of the objects that the raycast hits to set canMoveDown to true
         for (int i = 0; i < hitsDown.Length; i++)
         {
             float distance = Mathf.Abs(hitsDown[i].point.y - transform.position.y);
@@ -60,7 +63,7 @@ public class NodeController : MonoBehaviour
         //shoot raycast (line) going up
         hitsUp = Physics2D.RaycastAll(transform.position, Vector2.up);
 
-        //loop through all of the objects that the raycast hits
+        //loop through all of the objects that the raycast hits to set canMoveUp to true
         for (int i = 0; i < hitsUp.Length; i++)
         {
             float distance = Mathf.Abs(hitsUp[i].point.y - transform.position.y);
@@ -75,7 +78,7 @@ public class NodeController : MonoBehaviour
         //shoot raycast (line) going right
         hitsRight = Physics2D.RaycastAll(transform.position, Vector2.right);
 
-        //loop through all of the objects that the raycast hits
+        //loop through all of the objects that the raycast hits to set canMoveRight to true
         for (int i = 0; i < hitsRight.Length; i++)
         {
             float distance = Mathf.Abs(hitsRight[i].point.x - transform.position.x);
@@ -90,7 +93,7 @@ public class NodeController : MonoBehaviour
         //shoot raycast (line) going right
         hitsLeft = Physics2D.RaycastAll(transform.position, -Vector2.right);
 
-        //loop through all of the objects that the raycast hits
+        //loop through all of the objects that the raycast hits to set canMoveLeft to true
         for (int i = 0; i < hitsLeft.Length; i++)
         {
             float distance = Mathf.Abs(hitsLeft[i].point.x - transform.position.x);
@@ -100,6 +103,7 @@ public class NodeController : MonoBehaviour
                 nodeLeft = hitsLeft[i].collider.gameObject;
             }
         }
+        //allow ghosts to move back into spawn after being eaten
         if (isGhostStartingNode)
         {
             canMoveDown = true;
@@ -115,6 +119,7 @@ public class NodeController : MonoBehaviour
             return;
         }
 
+        //make power pellets blink
         if (isPowerPellet && hasPellet)
         {
             powerPelletBlinkingTimer += Time.deltaTime;
@@ -126,6 +131,7 @@ public class NodeController : MonoBehaviour
         }
     }
 
+    //Get next node based on direction and current node
     public GameObject GetNodeFromDirection(string direction)
     {
         if (direction == "left" && canMoveLeft)

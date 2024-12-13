@@ -5,13 +5,10 @@ using UnityEngine;
 public class MovementController : MonoBehaviour
 {
     public GameManager gameManager;
-
     public GameObject currentNode;
     public float speed = 4f;
-
     public string direction = "";
     public string lastMovingDirection = "";
-
     public bool canWarp = true;
     public bool isGhost = false;
 
@@ -73,7 +70,7 @@ public class MovementController : MonoBehaviour
             //else find the next node we are going to be moving towards
             else
             {
-                //If we are not a ghost that is respawning, and we are on the start node, and we are trying to go down, STOP
+                //If we are not a ghost that is respawning, and we are on the start node and trying to go down, STOP
                 if (currentNodeController.isGhostStartingNode && direction == "down" 
                     && (!isGhost || GetComponent<EnemyController>().ghostNodeState != EnemyController.GhostNodeStatesEnum.respawning))
                     {

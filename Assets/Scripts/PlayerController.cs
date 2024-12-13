@@ -24,12 +24,12 @@ public class PlayerController : MonoBehaviour
         startNode = movementController.currentNode;
     }
 
+    //reset pacman animations, speed, and position
     public void SetUp()
     {
         isDead = false;
         animator.SetBool("dead", false);
         animator.SetBool("moving", false);
-
         movementController.currentNode = startNode;
         movementController.direction = "left";
         movementController.lastMovingDirection = "left";
@@ -38,6 +38,7 @@ public class PlayerController : MonoBehaviour
         animator.speed = 1;
     }
 
+    //stop pacmans animation
     public void Stop()
     {
         animator.speed = 0;
@@ -47,16 +48,21 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //check that game is running
         if (!gameManager.gameIsRunning)
         {
+            //stop animation if pacman dies
             if (!isDead)
             {
                 animator.speed = 0;
             }
+            //return if game is not running
             return;
         }
+        //set pacman animation
         animator.speed = 1;
         animator.SetBool("moving", true);
+        //check for mevement input
         if (Input.GetKey(KeyCode.LeftArrow))
         {
             movementController.SetDirection("left");
@@ -76,7 +82,7 @@ public class PlayerController : MonoBehaviour
 
         bool flipX = false;
         bool flipY = false;
-        //if  we go left or right set direction to 0
+        //direction to 0 =left or right
         //if we go right flip left animation horizontally
         if (movementController.lastMovingDirection == "left")
         {
@@ -87,8 +93,8 @@ public class PlayerController : MonoBehaviour
             animator.SetInteger("direction", 0);
             flipX = true;
         }
-        //if  we go up or down set direction to 0
-        //if we go down flip up animation vertically
+        //direction 1 = up or down
+        //if we go down flip animation vertically
         else if (movementController.lastMovingDirection == "up")
         {
             animator.SetInteger("direction", 1);
@@ -103,6 +109,7 @@ public class PlayerController : MonoBehaviour
         sprite.flipX = flipX;
     }
 
+    //pacman is dead
     public void Death()
     {
         isDead = true;

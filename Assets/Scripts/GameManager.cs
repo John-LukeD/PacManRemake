@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
 
 public class GameManager : MonoBehaviour
 {
@@ -23,7 +25,6 @@ public class GameManager : MonoBehaviour
     public GameObject ghostNodeRight;
     public GameObject ghostNodeCenter;
     public GameObject ghostNodeStart;
-
     public GameObject redGhost;
     public GameObject pinkGhost;
     public GameObject blueGhost;
@@ -60,6 +61,7 @@ public class GameManager : MonoBehaviour
     }
     public GhostMode currentGhostMode;
 
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -73,9 +75,7 @@ public class GameManager : MonoBehaviour
         orangeGhostController = orangeGhost.GetComponent<EnemyController>();
 
         ghostNodeStart.GetComponent<NodeController>().isGhostStartingNode = true;
-        //MAYBE DELETE
         pacman = GameObject.Find("Player");
-
 
         StartCoroutine(SetUp());
     }
@@ -88,6 +88,7 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+        //if timer is not done, switch between ghost modes until it is done
         if (!completedTimer && runningTimer)
         {
             ghostModeTimer += Time.deltaTime;
@@ -118,6 +119,7 @@ public class GameManager : MonoBehaviour
             currentPowerPelletTime += Time.deltaTime;
             if (currentPowerPelletTime >= powerPelletTimer)
             {
+                //power pellet is over
                 isPowerPelletRunning = false;
                 currentPowerPelletTime = 0;
                 powerPelletAudio.Stop();
@@ -127,6 +129,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    //flash blackscreen and reset everything
     public IEnumerator SetUp()
     {
         ghostModeTimerIndex = 0;
@@ -217,6 +220,7 @@ public class GameManager : MonoBehaviour
     }
     public IEnumerator CollectedPellet(NodeController nodeController)
     {
+        //alternate much sound
         if (currentMunch == 0)
         {
             munch1.Play();
@@ -234,6 +238,7 @@ public class GameManager : MonoBehaviour
         int requiredBluePellets;
         int requiredOrangePellets;
 
+        //intitalize number of pellets needed to release blue and orange
         if (hadDeathOnThisLevel)
         {
             requiredBluePellets = 12;
@@ -245,6 +250,7 @@ public class GameManager : MonoBehaviour
             requiredOrangePellets = 60;
         }
 
+        //if enough pellets have been collected, and they have not left home yet (start of new game/level) release orange and blue
         if (pelletsCollectedOnThisLife >= requiredBluePellets && !blueGhost.GetComponent<EnemyController>().leftHomeBefore)
         {
             blueGhost.GetComponent<EnemyController>().readyToLeaveHome = true;
@@ -254,10 +260,10 @@ public class GameManager : MonoBehaviour
             orangeGhost.GetComponent<EnemyController>().readyToLeaveHome = true;
         }
 
-        //add to score
+        //increment score by 10 for every regular pellet
         AddToScore(10);
 
-        //check if there are any pellets left
+        //check if there are any pellets left, if no => start new level
         if (pelletsLeft == 0)
         {
             currentLevel ++;
@@ -328,7 +334,8 @@ public class GameManager : MonoBehaviour
             newGame = true;
             //Display gameover text
             gameOverText.enabled = true;
-            yield return new WaitForSeconds(3);
+            yield return new WaitForSeconds(5);
+            SceneManager.LoadScene(0);
         }
 
         StartCoroutine(SetUp());

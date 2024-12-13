@@ -92,10 +92,9 @@ public class EnemyController : MonoBehaviour
 
         ghostNodeState = startGhostNodeState;
 
-        //DO NOT CGANGE ANYTHING BETWEEN THIS AND movementController.currentNode = startingNode;
-        //I spent 3 days trying to figure out what was wrong with this game and IDK HOW BUT AFTER PASTING
-        //THIS CODE WHICH IS WHAT I HAVE IN AWAKE, IT MAGICALLY WORKS AGAIN -- I cant explain why but i think the awake function
-        //was not executing -- will try yo fix awake to clean this up in future
+        //DO NOT CHANGE ANYTHING BETWEEN THIS AND movementController.currentNode = startingNode;
+        //This is the same code as Awake()
+        //I cant explain why but i think the Awake() function is not executing -- will try to clean this up in future
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         if (movementController == null)
         {
@@ -131,19 +130,16 @@ public class EnemyController : MonoBehaviour
         }       
         //END DO NOT TOUCH CODE 
 
-
         readyToLeaveHome = false;
         //Reset our ghost back to home position
         movementController.currentNode = startingNode; 
-
         transform.position = startingNode.transform.position;
         movementController.direction = "";
         movementController.lastMovingDirection = "";
         //set their sctter  node index back to 0
         scatterNodeIndex = 0;
-        //set is frightened to false
+        //set is frightened and leftHomeBefore to false
         isFreightened = false;
-
         leftHomeBefore = false;
         //set ready to leave home false if they are blue or pink ghost
         if (ghostType == GhostType.red)
@@ -208,6 +204,7 @@ public class EnemyController : MonoBehaviour
             return;
         }
 
+        //make ghosts blink when power pellet is about to stop
         if (gameManager.powerPelletTimer - gameManager.currentPowerPelletTime <= 3)
         {
             animator.SetBool("frightenedBlinking", true);
@@ -228,20 +225,24 @@ public class EnemyController : MonoBehaviour
             testRespawn = false;
         }
 
+        //make ghosts slow down through warps
         if (movementController.currentNode.GetComponent<NodeController>().isSideNode)
         {
             movementController.SetSpeed(1);
         }
         else
         {
+            //slow down
             if (isFreightened)
             {
                 movementController.SetSpeed(1);
             }
+            //speed up
             else if (ghostNodeState == GhostNodeStatesEnum.respawning)
             {
                 movementController.SetSpeed(7);
             }
+            //regular speed
             else
             {
                 movementController.SetSpeed(2);
@@ -296,12 +297,12 @@ public class EnemyController : MonoBehaviour
         else if (ghostNodeState == GhostNodeStatesEnum.respawning)
         {
             string direction = "";
-            //we hjave reached start node, move to centerNode
+            //if we have reached start node, move to centerNode (back to spawn box)
             if (transform.position.x == ghostNodeStart.transform.position.x && transform.position.y == ghostNodeStart.transform.position.y)
             {
                 direction = "down";
             }
-            //we have reacher our center node, finish respawn or move tot he left/right node
+            //we have reacher our center node, finish respawn or move to the left/right node
             else if (transform.position.x == ghostNodeCenter.transform.position.x && transform.position.y == ghostNodeCenter.transform.position.y)
             {
                 if (respawnState == GhostNodeStatesEnum.centerNode)
@@ -374,7 +375,7 @@ public class EnemyController : MonoBehaviour
                 if (transform.position.x == scatterNodes[scatterNodeIndex].transform.position.x && transform.position.y == scatterNodes[scatterNodeIndex].transform.position.y)
                 {
                     scatterNodeIndex++;
-
+                    //reset index to keep loopioing through scatter nodes
                     if (scatterNodeIndex == scatterNodes.Length - 1)
                     {
                         scatterNodeIndex = 0;
@@ -386,12 +387,14 @@ public class EnemyController : MonoBehaviour
                 movementController.SetDirection(direction);
     }
 
+    //redGhost logic
     void DetermineRedGhostDirection()
     {
         string direction = GetClosestDirection(gameManager.pacman.transform.position);
         movementController.SetDirection(direction);
     }
 
+    //Pink ghost logic
     void DeterminePinkGhostDirection()
     {
         string pacmansDirection = gameManager.pacman.GetComponent<MovementController>().lastMovingDirection;
@@ -417,6 +420,7 @@ public class EnemyController : MonoBehaviour
         movementController.SetDirection(direction);
     }
 
+    //Blue ghost logic
     void DetermineBlueGhostDirection()
     {
         string pacmansDirection = gameManager.pacman.GetComponent<MovementController>().lastMovingDirection;
@@ -448,6 +452,7 @@ public class EnemyController : MonoBehaviour
         movementController.SetDirection(direction);
     }
 
+    //get random direction based off of possible directions for scatter mode
     string GetRandomDirection()
     {
         List<string> possibleDirections = new List<string>();
@@ -476,6 +481,7 @@ public class EnemyController : MonoBehaviour
         return direction;
     }
 
+    //orangeGhost Logic
     void DetermineOrangeGhostDirection()
     {
         float distance = Vector2.Distance(gameManager.pacman.transform.position, transform.position);
